@@ -43,7 +43,6 @@ func Register(db *gorm.DB) gin.HandlerFunc {
 		c.JSON(http.StatusCreated, gin.H{
 			"message":  "User registered successfully",
 			"id":       user.ID,
-			"password": user.Password,
 		})
 	}
 }
@@ -65,9 +64,6 @@ func Login(db *gorm.DB, authService auth.AuthService) gin.HandlerFunc {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 			return
 		}
-
-		println(user.Password)
-		println(credentials.Password)
 
 		if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(credentials.Password)); err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
